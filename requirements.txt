@@ -1,7 +1,7 @@
 scipy==1.1.0
 matplotlib==3.0.1
 pyworld==0.2.8
-tensorflow==1.12.0
+tensorflow==1.12.2
 librosa==0.6.2
 numpy==1.15.4
 SoundFile==0.10.2
