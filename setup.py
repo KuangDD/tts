@@ -29,7 +29,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.splitext(os.path.basename(__name__))[0])
 install_requires = ['librosa', 'pydub', 'scipy', 'numpy', 'dotmap']
-requires = ['tensorflow<=1.15.2', 'pyaudio', 'webrtcvad', 'lws', 'sounddevice', 'pyworld']
+requires = ['tensorflow<=1.15.2', 'pyaudio', 'webrtcvad', 'lws', 'sounddevice', 'pyworld', 'tqdm']
 
 
 def create_readme():

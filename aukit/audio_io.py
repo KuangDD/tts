@@ -10,7 +10,7 @@ from pathlib import Path
 import logging
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(Path(__name__).stem)
+logger = logging.getLogger(Path(__file__).stem)
 
 from scipy.io import wavfile
 from pathlib import Path
@@ -60,13 +60,13 @@ def save_wav(wav, path, sr=_sr):
 
 
 def load_wav_librosa(path, sr=_sr, with_sr=False):
-    wav, sr = librosa.core.load(path, sr=sr)
+    wav, sr = librosa.load(path, sr=sr)
     return (wav, sr) if with_sr else wav
 
 
 def load_wav_wavfile(path, sr=None, with_sr=False):
     sr, wav = wavfile.read(path)
-    wav = wav / np.max(np.abs(wav))
+    wav = wav / max(np.max(np.abs(wav)), 0.01)
     return (wav, sr) if with_sr else wav
 
 

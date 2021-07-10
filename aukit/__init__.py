@@ -22,7 +22,7 @@ pip install -U aukit
     * aukit的默认音频采样率为16k。
 """
 
-__version__ = '1.4.4'
+__version__ = '1.4.5'
 
 from .audio_io import load_wav, save_wav, anything2bytesio, anything2wav, anything2bytes, Dict2Obj, _sr
 from .audio_editor import strip_audio, remove_silence_audio, split_audio, convert_sample_rate
@@ -60,6 +60,8 @@ v{}
 
 history_doc = """
 ### 历史版本
+#### v1.4.5
+- logger改为__file__。
 
 #### v1.4.4
 - Dict2Obj方法增加parse方法。

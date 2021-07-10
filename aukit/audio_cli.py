@@ -47,7 +47,7 @@ from pathlib import Path
 import logging
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(Path(__name__).stem)
+logger = logging.getLogger(Path(__file__).stem)
 
 import sys
 from functools import partial
@@ -196,7 +196,7 @@ def pool_jobs(func, n_process=_n_process, kwargs_list=(), post_func=None, tqdm_d
     """
     if post_func is None:
         post_func = lambda x: x
-    _tqdm = lambda x: tqdm(x, desc=tqdm_desc, total=len(kwargs_list), ncols=80, mininterval=1)
+    _tqdm = lambda x: tqdm(x, desc=tqdm_desc, total=len(kwargs_list), ncols=100, mininterval=1)
     if n_process == 0 or n_process == 1:
         for kw in _tqdm(kwargs_list):
             out = func(kw)

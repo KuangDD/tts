@@ -10,7 +10,7 @@ from pathlib import Path
 import logging
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(Path(__name__).stem)
+logger = logging.getLogger(Path(__file__).stem)
 
 import librosa
 import librosa.filters
@@ -20,10 +20,11 @@ from scipy.io import wavfile
 from .audio_spectrogram import default_hparams
 from .audio_io import Dict2Obj
 
-# try:
-#     import tensorflow as tf
-# except ImportError as e:
-#     logger.info("ImportError: {}".format(e))
+try:
+    import tensorflow as tf
+    import lws
+except ImportError as e:
+    logger.info("ImportError: {}".format(e))
 
 tmp = dict([('use_lws', False), ('frame_shift_ms', None), ('silence_threshold', 2), ('griffin_lim_iters', 30)])
 default_hparams.update(tmp)
@@ -80,7 +81,6 @@ def inv_linear_spectrogram_tensorflow(linear_spectrogram, hparams=None):
     inv_preemphasis on the output after running the graph.
     linear_spectrogram.shape[1] = n_fft
     '''
-    import tensorflow as tf
     hparams = hparams or default_hparams
     S = _db_to_amp_tensorflow(_denormalize_tensorflow(linear_spectrogram, hparams) + hparams.ref_level_db)
     return _griffin_lim_tensorflow(tf.pow(S, hparams.power), hparams)
@@ -91,7 +91,6 @@ def inv_linear_spectrogram_tf(linear_spectrogram, hparams=None):
     返回wav语音信号。
     linear_spectrogram.shape[1] = num_freq = (n_fft / 2) + 1
     """
-    import tensorflow as tf
     hparams = hparams or default_hparams
     _shape = linear_spectrogram.shape
     tmp = np.concatenate(
@@ -226,7 +225,6 @@ def mel2linear_spectrogram(mel_spectrogram, hparams=None):
 
 def _lws_processor(hparams=None):
     hparams = hparams or default_hparams
-    import lws
     return lws.lws(hparams.n_fft, get_hop_size(hparams), fftsize=hparams.win_size, mode="speech")
 
 
@@ -259,7 +257,6 @@ def _griffin_lim_tensorflow(S, hparams=None):
     '''TensorFlow implementation of Griffin-Lim
     Based on https://github.com/Kyubyong/tensorflow-exercises/blob/master/Audio_Processing.ipynb
     '''
-    import tensorflow as tf
     hparams = hparams or default_hparams
     with tf.variable_scope('griffinlim'):
         # TensorFlow's stft and istft operate on a batch of spectrograms; create batch of size 1
@@ -283,7 +280,6 @@ def _stft(y, hparams=None):
 
 
 def _stft_tensorflow(signals, hparams=None):
-    import tensorflow as tf
     hparams = hparams or default_hparams
     n_fft, hop_length, win_length = _stft_parameters(hparams)
     return tf.contrib.signal.stft(signals, win_length, hop_length, n_fft, pad_end=False)
@@ -295,7 +291,6 @@ def _istft(y, hparams=None):
 
 
 def _istft_tensorflow(stfts, hparams=None):
-    import tensorflow as tf
     hparams = hparams or default_hparams
     n_fft, hop_length, win_length = _stft_parameters(hparams)
     return tf.contrib.signal.inverse_stft(stfts, win_length, hop_length, n_fft)
@@ -374,7 +369,6 @@ def _db_to_amp(x):
 
 
 def _db_to_amp_tensorflow(x):
-    import tensorflow as tf
     return tf.pow(tf.ones(tf.shape(x)) * 10.0, x * 0.05)
 
 
@@ -412,7 +406,6 @@ def _denormalize(D, hparams=None):
 
 
 def _denormalize_tensorflow(S, hparams=None):
-    import tensorflow as tf
     hparams = hparams or default_hparams
     mi = hparams.min_level_db
     return (tf.clip_by_value(S, 0, 1) * -mi) + mi

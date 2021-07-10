@@ -26,19 +26,19 @@ def run_spectrogram():
     from aukit import audio_griffinlim as agf
     from aukit import audio_io as aio
     from aukit.audio_player import play_audio
-    inpath = r"E:/data/temp/01.wav"
+    inpath = r"hello.wav"
     wav, sr = aio.load_wav(inpath, with_sr=True)
     print(wav.shape, sr)
-    play_audio(wav, sr)
+    # play_audio(wav, sr)
 
     lin_gf = agf.linear_spectrogram(wav)
     wav_gf = agf.inv_linear_spectrogram(lin_gf)
-    play_audio(wav_gf, sr)
+    # play_audio(wav_gf, sr)
 
     mel_sp = asp.mel_spectrogram(wav)
     mel_sp = asp.mel2linear_spectrogram(mel_sp)
     wav_sp = agf.inv_linear_spectrogram(mel_sp)
-    play_audio(wav_sp, sr)
+    # play_audio(wav_sp, sr)
 
     linear_gf = agf.linear_spectrogram(wav)
     mel_lin = agf.linear2mel_spectrogram(linear_gf)
@@ -59,22 +59,22 @@ def run_spectrogram():
 
     wav_ms = agf.inv_mel_spectrogram(mel_sp)
     wav_mf = agf.inv_mel_spectrogram(mel_fea)
-    play_audio(wav_ms, sr)
-    play_audio(wav_mf, sr)
+    # play_audio(wav_ms, sr)
+    # play_audio(wav_mf, sr)
 
 
 def run_world():
     from aukit import audio_world as awd
     from aukit import audio_player as apr
     from aukit import audio_io as aio
-    inpath = r"E:/data/temp/01.wav"
+    inpath = r"hello.wav"
     # sr, x = wavfile.read(inpath)
     x, sr = aio.load_wav(inpath, with_sr=True)
     f0, sp, ap = awd.world_spectrogram(x, sr)
     y = awd.inv_world_spectrogram(f0, sp, ap, sr)
 
-    apr.play_audio(x, sr)
-    apr.play_audio(y, sr)
+    # apr.play_audio(x, sr)
+    # apr.play_audio(y, sr)
 
 
 def create_readme():
@@ -98,7 +98,7 @@ def run_tuner():
     print(bys)
     wav = tune_pitch(bys, sr=16000, rate=1, out_type=None)
     print(wav)
-    aukit.play_audio(wav)
+    # aukit.play_audio(wav)
 
 
 def run_noise_remover():
@@ -106,15 +106,15 @@ def run_noise_remover():
     inpath = r"hello.wav"
     wav = aukit.load_wav(inpath)
     out = aukit.remove_noise(wav)
-    aukit.play_audio(out)
+    # aukit.play_audio(out)
 
 
 def run_player():
     import aukit
-    inpath = Path(r"E:\data\aliaudio\examples\ali_Aibao_000001.wav")
+    inpath = Path(r"hello.wav")
     wav = aukit.load_wav(inpath, sr=16000)
     wav = aukit.change_voice(wav, mode="assign_pitch", alpha=200)
-    aukit.play_audio(wav, volume=0.5)
+    # aukit.play_audio(wav, volume=0.5)
 
 
 def run_aukit():
@@ -152,7 +152,7 @@ def run_normalizer():
     wav, sr = aukit.load_wav(inpath, with_sr=True)
     out = ano.remove_silence(wav)
     out = ano.tune_volume(wav, target_dBFS=-10)
-    play_sound(out, sr)
+    # play_sound(out, sr)
 
 
 def run_editor():
@@ -169,17 +169,19 @@ def run_editor():
     out = aed.strip_silence_wave(out, sr=sr)
 
     print(len(wav), len(out))
-    play_audio(out, sr)
+    # play_audio(out, sr)
 
-from aukit.audio_editor import convert_format_os
+
 def convert_format(x):
+    from aukit.audio_editor import convert_format_os
+
     return convert_format_os(**x)
+
 
 def run_cli():
     from aukit.audio_cli import pool_jobs
 
     from pathlib import Path
-
 
     indir = Path(r"E:\lab\zhrtvc\data\samples\aishell")
     outdir = Path(r"E:\lab\zhrtvc\data\samples_wav\aishell")
@@ -194,7 +196,6 @@ def run_cli():
         kw_lst.append(kw)
 
     pool_jobs(func=convert_format, n_process=14, kwargs_list=kw_lst, tqdm_desc='convert_format')
-
 
 
 if __name__ == "__main__":

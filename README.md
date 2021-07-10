@@ -38,7 +38,7 @@ pip install -U aukit
 
 ### 版本
 
-v1.4.4
+v1.4.5
 
 
 
@@ -126,6 +126,8 @@ auformat inpath outpath out_format [in_format]
 
 变声器，变高低音，变语速，变萝莉音，回声。
 
+基于librosa的变声。
+
 
 
 ### audio_editor
@@ -191,6 +193,10 @@ world声码器，提取语音的基频、频谱包络和非周期信号，频谱
 
 
 ### 历史版本
+
+#### v1.4.5
+
+- logger改为__file__。
 
 
 
