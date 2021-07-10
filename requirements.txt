@@ -8,7 +8,7 @@ webrtcvad_wheels==2.0.10.post2
 librosa==0.8.0
 dotmap==1.3.23
 pydub==0.24.1
-tensorflow==1.13.1
+tensorflow==2.4.2
 lws==1.2.7
 pyaudio==0.2.11
 webrtcvad==2.0.10
